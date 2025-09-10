@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>メローキタブ</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f8fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #306998 0%, #4B8BBE 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-bottom: 5px solid #FFD43B;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .site-title {
+            font-size: 2.2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            font-weight: 300;
+            max-width: 600px;
+            text-align: right;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            display: flex;
+            margin: 30px 0;
+            gap: 30px;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .sidebar h2 {
+            color: #306998;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #FFD43B;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .modules {
+            list-style: none;
+        }
+        
+        .modules li {
+            margin-bottom: 12px;
+        }
+        
+        .modules a {
+            display: block;
+            padding: 12px 15px;
+            color: #444;
+            text-decoration: none;
+            border-left: 4px solid #e0e0e0;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .modules a:hover {
+            background: #f0f7ff;
+            border-left: 4px solid #306998;
+            transform: translateX(5px);
+        }
+        
+        .modules a.active {
+            background: #e6f2ff;
+            border-left: 4px solid #306998;
+            color: #306998;
+            font-weight: 600;
+        }
+        
+        .module-icon {
+            margin-right: 10px;
+            font-size: 1.1rem;
+            width: 25px;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        /* Content Area Styles */
+        .content-area {
+            flex: 3;
+            background: white;
+            border-radius: 10px;
+            padding: 35px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            min-height: 600px;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .lesson-title {
+            color: #306998;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #FFD43B;
+            display: flex;
+            align-items: center;
+        }
+        
+        .lesson-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+        }
+        
+        .lesson-content {
+            margin-bottom: 35px;
+        }
+        
+        .lesson-content h3 {
+            color: #4B8BBE;
+            margin: 25px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .lesson-content p {
+            margin-bottom: 18px;
+            font-size: 1.05rem;
+        }
+        
+        .lesson-content ul, .lesson-content ol {
+            margin: 15px 0 15px 30px;
+        }
+        
+        .lesson-content li {
+            margin-bottom: 10px;
+        }
+        
+        .code-example {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            line-height: 1.5;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+        
+        .code-example .keyword {
+            color: #c678dd;
+        }
+        
+        .code-example .function {
+            color: #61afef;
+        }
+        
+        .code-example .string {
+            color: #98c379;
+        }
+        
+        .code-example .comment {
+            color: #5c6370;
+        }
+        
+        .code-example .number {
+            color: #d19a66;
+        }
+        
+        .note {
+            background: #f8f9fa;
+            border-left: 4px solid #4B8BBE;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .note h4 {
+            color: #306998;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .note-icon {
+            margin-right: 8px;
+        }
+        
+        .exercise {
+            background: #e6f7ff;
+            border: 1px solid #91d5ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        
+        .exercise h4 {
+            color: #0050b3;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .exercise-icon {
+            margin-right: 10px;
+        }
+        
+        .resources {
+            background: #fff4e6;
+            border: 1px solid #ffd8a8;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        
+        .resources h3 {
+            color: #e67700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .resource-icon {
+            margin-right: 10px;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            background: #306998;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .btn:hover {
+            background: #4B8BBE;
+        }
+        
+        .btn-secondary {
+            background: #FFD43B;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #ffde59;
+        }
+        
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #333;
+            color: white;
+            margin-top: 50px;
+            border-top: 5px solid #FFD43B;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin: 15px;
+        }
+        
+        .footer-section h3 {
+            color: #FFD43B;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .footer-section p, .footer-section a {
+            color: #ddd;
+            margin-bottom: 10px;
+            text-decoration: none;
+            display: block;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: #4B8BBE;
+        }
+        
+        .copyright {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #555;
+            color: #aaa;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 900px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .site-title {
+                margin-bottom: 15px;
+            }
+            
+            .tagline {
+                text-align: center;
+            }
+            
+            .sidebar {
+                position: static;
+                margin-bottom: 20px;
+            }
+            
+            .lesson-title {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .site-title {
+                font-size: 1.8rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+            
+            .content-area {
+                padding: 20px;
+            }
+            
+            .lesson-title {
+                font-size: 1.6rem;
+            }
+            
+            .code-example {
+                padding: 15px;
+                font-size: 0.9rem;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+   <header>
+    <div class="container">
+        <div class="header-content">
+            <div class="site-title"><a href="menu.html" style="color: white; text-decoration: none;">メローキタブ</a></div>
+        </div>
+    </div>
+</header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Sidebar with Lessons -->
+            <div class="sidebar">
+                <h2>Course Content</h2>
+                <ul class="modules">
+                    <li><a class="nav-link active" data-page="intro"><span class="module-icon"></span>Introduction to Python</a></li>
+                    <li><a class="nav-link" data-page="variables"><span class="module-icon"></span>Variables & Data Types</a></li>
+                    <li><a class="nav-link" data-page="operators"><span class="module-icon"></span>Operators & Expressions</a></li>
+                    <li><a class="nav-link" data-page="control-flow"><span class="module-icon"></span>Control Flow</a></li>
+                    <li><a class="nav-link" data-page="functions"><span class="module-icon"></span>Functions</a></li>
+                    <li><a class="nav-link" data-page="data-structures"><span class="module-icon"></span>Data Structures</a></li>
+                    <li><a class="nav-link" data-page="file-handling"><span class="module-icon"></span>File Handling</a></li>
+                    <li><a class="nav-link" data-page="error-handling"><span class="module-icon"></span>Error Handling</a></li>
+                    <li><a class="nav-link" data-page="modules"><span class="module-icon"></span>Modules & Packages</a></li>
+                    <li><a class="nav-link" data-page="oop"><span class="module-icon"></span>OOP Concepts</a></li>
+                    <li><a class="nav-link" data-page="apis"><span class="module-icon"></span>Working with APIs</a></li>
+                    <li><a class="nav-link" data-page="web-dev"><span class="module-icon"></span>Web Development</a></li>
+                    <li><a class="nav-link" data-page="data-science"><span class="module-icon"></span>Data Science Basics</a></li>
+                    <li><a class="nav-link" data-page="project"><span class="module-icon"></span>Final Project</a></li>
+                </ul>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Introduction Page -->
+                <div id="intro" class="page active">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 1: Introduction to Python</h2>
+                    
+                    <div class="lesson-content">
+                        <h3>What is Python?</h3>
+                        <p>Python is a high-level, interpreted programming language known for its clear syntax and readability. Created by Guido van Rossum and first released in 1991, Python has become one of the most popular programming languages in the world.</p>
+                        
+                        <div class="note">
+                            <h4><span class="note-icon"></span>Did You Know?</h4>
+                            <p>Python was named after the British comedy group Monty Python, not the snake!</p>
+                        </div>
+                        
+                        <h3>Why Learn Python?</h3>
+                        <p>Python is versatile and can be used for:</p>
+                        <ul>
+                            <li>Web development (Django, Flask)</li>
+                            <li>Data analysis and visualization (Pandas, Matplotlib)</li>
+                            <li>Machine learning and AI (TensorFlow, PyTorch)</li>
+                            <li>Automation and scripting</li>
+                            <li>Game development (Pygame)</li>
+                            <li>Scientific computing</li>
+                        </ul>
+                        
+                        <h3>Your First Python Program</h3>
+                        <p>Let's start with the traditional "Hello, World!" program. In Python, this is very simple:</p>
+                        
+                        <div class="code-example">
+                            <span class="comment"># This is a comment</span><br>
+                            <span class="function">print</span>(<span class="string">"Hello, World!"</span>)<br>
+                            <span class="comment"># Output: Hello, World!</span>
+                        </div>
+                        
+                        <p>To run this code, you can save it in a file with a .py extension (e.g., hello.py) and run it using Python interpreter, or type it directly into the Python shell.</p>
+                        
+                        <h3>Python Syntax Basics</h3>
+                        <p>Python uses indentation to define code blocks, unlike other languages that use braces {}. This makes Python code very readable.</p>
+                        
+                        <div class="code-example">
+                            <span class="comment"># If statement example</span><br>
+                            <span class="keyword">if</span> <span class="number">5</span> <span class="number">2</span>:<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="function">print</span>(<span class="string">"Five is greater than two!"</span>)<br>
+                            <span class="comment"># Output: Five is greater than two!</span>
+                        </div>
+                        
+                        <p>Note how the print statement is indented. This indentation is required for the code to work properly.</p>
+                        
+                        <div class="exercise">
+                            <h4><span class="exercise-icon">✏️</span>Try It Yourself</h4>
+                            <p>Open a Python interpreter or create a Python file and try the following:</p>
+                            <ol>
+                                <li>Print your name using the print() function</li>
+                                <li>Write an if statement that checks if 10 is greater than 5 and prints a message</li>
+                                <li>Try writing code without proper indentation to see what error you get</li>
+                            </ol>
+                        </div>
+                        
+                        <h3>Python Features</h3>
+                        <p>Python has several features that make it a great choice for beginners and experts alike:</p>
+                        <ul>
+                            <li><strong>Easy to Learn:</strong> Clean and straightforward syntax</li>
+                            <li><strong>Interpreted:</strong> No need for compilation</li>
+                            <li><strong>Cross-platform:</strong> Runs on Windows, macOS, Linux</li>
+                            <li><strong>Large Standard Library:</strong> Comes with many built-in modules</li>
+                            <li><strong>Community Support:</strong> Active community with extensive documentation</li>
+                        </ul>
+                        
+                        <h3>Setting Up Python</h3>
+                        <p>To get started with Python, you'll need to install it on your computer:</p>
+                        <ol>
+                            <li>Download the latest version from the official Python website</li>
+                            <li>Run the installer and follow the instructions</li>
+                            <li>Verify the installation by opening a terminal and typing <code>python --version</code></li>
+                        </ol>
+                        
+                        <p>You might also want to install an Integrated Development Environment (IDE) like PyCharm or Visual Studio Code to make coding easier.</p>
+                        
+                        <div class="resources">
+                            <h3><span class="resource-icon"></span>Learning Resources</h3>
+                            <ul>
+                                <li>Official Python Documentation: docs.python.org</li>
+                                <li>Python for Beginners: python.org/about/gettingstarted</li>
+                                <li>Codecademy Python Course: codecademy.com/learn/learn-python</li>
+                                <li>Coursera Python Specializations: courser.org/courses?query=python</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="note">
+                            <h4><span class="note-icon"></span>Note for Beginners</h4>
+                            <p>If you're new to programming, don't worry about understanding everything at once. Focus on the basics and practice regularly. Programming is a skill that improves with time and experience.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="navigation">
+                        <button class="btn" disabled>Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="variables">Next Lesson: Variables & Data Types</button>
+                    </div>
+                </div>
+
+                <!-- Variables Page -->
+                <div id="variables" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 2: Variables & Data Types</h2>
+                    
+                    <div class="lesson-content">
+                        <h3>What are Variables?</h3>
+                        <p>Variables are used to store data values. In Python, you don't need to declare a variable with a specific type. The type is inferred from the value you assign.</p>
+                        
+                        <div class="code-example">
+                            <span class="comment"># Variable assignment</span><br>
+                            x = <span class="number">5</span><br>
+                            name = <span class="string">"John"</span><br>
+                            is_student = <span class="keyword">True</span><br>
+                            <br>
+                            <span class="comment"># Print variables</span><br>
+                            <span class="function">print</span>(x)<br>
+                            <span class="function">print</span>(name)<br>
+                            <span class="function">print</span>(is_student)
+                        </div>
+                        
+                        <h3>Basic Data Types</h3>
+                        <p>Python has several built-in data types:</p>
+                        <ul>
+                            <li><strong>Integers:</strong> Whole numbers (e.g., 5, -3, 1000)</li>
+                            <li><strong>Floats:</strong> Decimal numbers (e.g., 3.14, -0.5, 2.0)</li>
+                            <li><strong>Strings:</strong> Text data (e.g., "hello", 'Python')</li>
+                            <li><strong>Booleans:</strong> True or False values</li>
+                            <li><strong>None:</strong> Represents absence of value</li>
+                        </ul>
+                        
+                        <div class="code-example">
+                            <span class="comment"># Examples of different data types</span><br>
+                            age = <span class="number">25</span>          <span class="comment"># Integer</span><br>
+                            height = <span class="number">5.9</span>       <span class="comment"># Float</span><br>
+                            name = <span class="string">"Alice"</span>     <span class="comment"># String</span><br>
+                            is_adult = <span class="keyword">True</span>   <span class="comment"># Boolean</span><br>
+                            score = <span class="keyword">None</span>      <span class="comment"># None</span>
+                        </div>
+                        
+                        <h3>Type Conversion</h3>
+                        <p>You can convert between different data types using built-in functions:</p>
+                        
+                        <div class="code-example">
+                            <span class="comment"># Type conversion examples</span><br>
+                            x = <span class="number">10</span><br>
+                            y = <span class="number">3.14</span><br>
+                            z = <span class="string">"20"</span><br>
+                            <br>
+                            <span class="comment"># Convert to float</span><br>
+                            float_x = <span class="function">float</span>(x)   <span class="comment"># 10.0</span><br>
+                            <br>
+                            <span class="comment"># Convert to integer</span><br>
+                            int_y = <span class="function">int</span>(y)      <span class="comment"># 3</span><br>
+                            <br>
+                            <span class="comment"># Convert to string</span><br>
+                            str_x = <span class="function">str</span>(x)      <span class="comment"># "10"</span><br>
+                            <br>
+                            <span class="comment"># Convert string to integer</span><br>
+                            int_z = <span class="function">int</span>(z)      <span class="comment"># 20</span>
+                        </div>
+                        
+                        <div class="exercise">
+                            <h4><span class="exercise-icon"></span>Practice Exercise</h4>
+                            <p>Try these exercises to practice working with variables:</p>
+                            <ol>
+                                <li>Create variables to store your name, age, and favorite color</li>
+                                <li>Print a message that includes all these variables</li>
+                                <li>Convert a string containing a number to an integer and perform arithmetic operations with it</li>
+                                <li>Create a variable with value None and check its type using the type() function</li>
+                            </ol>
+                        </div>
+                        
+                        <h3>Variable Naming Rules</h3>
+                        <p>When naming variables in Python, follow these rules:</p>
+                        <ul>
+                            <li>Variable names can contain letters, numbers, and underscores</li>
+                            <li>They cannot start with a number</li>
+                            <li>They are case-sensitive (age, Age, and AGE are different variables)</li>
+                            <li>Use descriptive names that indicate the purpose of the variable</li>
+                            <li>Follow the snake_case naming convention (e.g., user_name, is_logged_in)</li>
+                        </ul>
+                        
+                        <div class="note">
+                            <h4><span class="note-icon"></span>Best Practice</h4>
+                            <p>Always use descriptive variable names. Instead of short names like 'x' or 'n', use names that describe what the variable represents, like 'student_count' or 'is_authenticated'. This makes your code much more readable.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="intro">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="operators">Next Lesson: Operators & Expressions</button>
+                    </div>
+                </div>
+
+                <!-- Additional lesson pages would follow the same pattern -->
+                <!-- For brevity, I've included only two complete lessons -->
+                <!-- The other lessons would have similar structure -->
+
+                <!-- Operators Page (Simplified) -->
+                <div id="operators" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 3: Operators & Expressions</h2>
+                    
+                    <div class="lesson-content">
+                        <h3>Arithmetic Operators</h3>
+                        <p>Python supports various arithmetic operators for mathematical operations:</p>
+                        
+                        <div class="code-example">
+                            <span class="comment"># Arithmetic operators</span><br>
+                            x = <span class="number">10</span><br>
+                            y = <span class="number">3</span><br>
+                            <br>
+                            <span class="function">print</span>(x + y)   <span class="comment"># Addition: 13</span><br>
+                            <span class="function">print</span>(x - y)   <span class="comment"># Subtraction: 7</span><br>
+                            <span class="function">print</span>(x * y)   <span class="comment"># Multiplication: 30</span><br>
+                            <span class="function">print</span>(x / y)   <span class="comment"># Division: 3.333...</span><br>
+                            <span class="function">print</span>(x // y)  <span class="comment"># Floor division: 3</span><br>
+                            <span class="function">print</span>(x % y)   <span class="comment"># Modulus: 1</span><br>
+                            <span class="function">print</span>(x ** y)  <span class="comment"># Exponentiation: 1000</span>
+                        </div>
+                        
+                        <p>More content would go here for the complete lesson...</p>
+                    </div>
+                    
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="variables">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="control-flow">Next Lesson: Control Flow</button>
+                    </div>
+                </div>
+
+                <!-- Placeholder for other lessons -->
+                <div id="control-flow" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 4: Control Flow</h2>
+                    <p>Content for control flow lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="operators">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="functions">Next Lesson: Functions</button>
+                    </div>
+                </div>
+
+                <div id="functions" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 5: Functions</h2>
+                    <p>Content for functions lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="control-flow">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="data-structures">Next Lesson: Data Structures</button>
+                    </div>
+                </div>
+
+                <!-- Additional lesson placeholders -->
+                <div id="data-structures" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 6: Data Structures</h2>
+                    <p>Content for data structures lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="functions">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="file-handling">Next Lesson: File Handling</button>
+                    </div>
+                </div>
+
+                <div id="file-handling" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 7: File Handling</h2>
+                    <p>Content for file handling lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="data-structures">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="error-handling">Next Lesson: Error Handling</button>
+                    </div>
+                </div>
+
+                <div id="error-handling" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 8: Error Handling</h2>
+                    <p>Content for error handling lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="file-handling">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="modules">Next Lesson: Modules & Packages</button>
+                    </div>
+                </div>
+
+                <div id="modules" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 9: Modules & Packages</h2>
+                    <p>Content for modules lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="error-handling">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="oop">Next Lesson: OOP Concepts</button>
+                    </div>
+                </div>
+
+                <div id="oop" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 10: OOP Concepts</h2>
+                    <p>Content for OOP lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="modules">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="apis">Next Lesson: Working with APIs</button>
+                    </div>
+                </div>
+
+                <div id="apis" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 11: Working with APIs</h2>
+                    <p>Content for APIs lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="oop">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="web-dev">Next Lesson: Web Development</button>
+                    </div>
+                </div>
+
+                <div id="web-dev" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 12: Web Development</h2>
+                    <p>Content for web development lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="apis">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="data-science">Next Lesson: Data Science Basics</button>
+                    </div>
+                </div>
+
+                <div id="data-science" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 13: Data Science Basics</h2>
+                    <p>Content for data science lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="web-dev">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="project">Next Lesson: Final Project</button>
+                    </div>
+                </div>
+
+                <div id="project" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 14: Final Project</h2>
+                    <p>Content for final project lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="data-science">Previous Lesson</button>
+                        <button class="btn" disabled>Next Lesson</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About This Course</h3>
+                    <p>A comprehensive Python programming course designed for 中央情報専門学校 Student</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="#" class="nav-link" data-page="intro">Course Overview</a>
+                    <a href="#">Resources</a>
+                    <a href="#">Code Examples</a>
+                    <a href="#">Practice Exercises</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Email: kcsonic23579@gmail.com</p>
+                    <p>Phone: 070-2011 9953</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>中央情報専門学校 TEAM E</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript to handle navigation between pages
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all navigation links
+            const navLinks = document.querySelectorAll('.nav-link');
+            const nextButtons = document.querySelectorAll('.next-btn');
+            const prevButtons = document.querySelectorAll('.prev-btn');
+            
+            // Function to show a specific page
+            function showPage(pageId) {
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // Show the requested page
+                document.getElementById(pageId).classList.add('active');
+                
+                // Update active link in sidebar
+                navLinks.forEach(link => {
+                    if (link.getAttribute('data-page') === pageId) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+                
+                // Scroll to top of content area
+                document.querySelector('.content-area').scrollTop = 0;
+            }
+            
+            // Add click event listeners to navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page');
+                    showPage(pageId);
+                });
+            });
+            
+            // Add click event listeners to next buttons
+            nextButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const nextPage = this.getAttribute('data-next');
+                    showPage(nextPage);
+                });
+            });
+            
+            // Add click event listeners to previous buttons
+            prevButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const prevPage = this.getAttribute('data-prev');
+                    showPage(prevPage);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
