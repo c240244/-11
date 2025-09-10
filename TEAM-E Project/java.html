@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Learning Platform</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #fff5e6;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #ff8c00 0%, #ffa64d 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-bottom: 5px solid #cc7a00;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .site-title {
+            font-size: 2.2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            font-weight: 300;
+            max-width: 600px;
+            text-align: right;
+        }
+        
+        /* Main Content Styles */
+        .main-content {
+            display: flex;
+            margin: 30px 0;
+            gap: 30px;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .sidebar h2 {
+            color: #cc7a00;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #ff8c00;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .modules {
+            list-style: none;
+        }
+        
+        .modules li {
+            margin-bottom: 12px;
+        }
+        
+        .modules a {
+            display: block;
+            padding: 12px 15px;
+            color: #444;
+            text-decoration: none;
+            border-left: 4px solid #e0e0e0;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .modules a:hover {
+            background: #fff5e6;
+            border-left: 4px solid #cc7a00;
+            transform: translateX(5px);
+        }
+        
+        .modules a.active {
+            background: #fff0d9;
+            border-left: 4px solid #cc7a00;
+            color: #cc7a00;
+            font-weight: 600;
+        }
+        
+        .module-icon {
+            margin-right: 10px;
+            font-size: 1.1rem;
+            width: 25px;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        /* Content Area Styles */
+        .content-area {
+            flex: 3;
+            background: white;
+            border-radius: 10px;
+            padding: 35px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            min-height: 600px;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .lesson-title {
+            color: #cc7a00;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #ff8c00;
+            display: flex;
+            align-items: center;
+        }
+        
+        .lesson-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+        }
+        
+        .lesson-content {
+            margin-bottom: 35px;
+        }
+        
+        .lesson-content h3 {
+            color: #ff8c00;
+            margin: 25px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .lesson-content p {
+            margin-bottom: 18px;
+            font-size: 1.05rem;
+        }
+        
+        .lesson-content ul, .lesson-content ol {
+            margin: 15px 0 15px 30px;
+        }
+        
+        .lesson-content li {
+            margin-bottom: 10px;
+        }
+        
+        .code-example {
+            background: #282c34;
+            color: #abb2bf;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            line-height: 1.5;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+        
+        .code-example .keyword {
+            color: #cc7832;
+        }
+        
+        .code-example .function {
+            color: #ffc66d;
+        }
+        
+        .code-example .string {
+            color: #6a8759;
+        }
+        
+        .code-example .comment {
+            color: #808080;
+        }
+        
+        .code-example .number {
+            color: #6897bb;
+        }
+        
+        .note {
+            background: #fffaf0;
+            border-left: 4px solid #ff8c00;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .note h4 {
+            color: #cc7a00;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .note-icon {
+            margin-right: 8px;
+        }
+        
+        .exercise {
+            background: #fff5e6;
+            border: 1px solid #ffd9b3;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        
+        .exercise h4 {
+            color: #cc7a00;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .exercise-icon {
+            margin-right: 10px;
+        }
+        
+        .resources {
+            background: #fff5e6;
+            border: 1px solid #ffd9b3;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        
+        .resources h3 {
+            color: #cc7a00;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .resource-icon {
+            margin-right: 10px;
+        }
+        
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            background: #cc7a00;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .btn:hover {
+            background: #ff8c00;
+        }
+        
+        .btn-secondary {
+            background: #ffa64d;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #ffb366;
+        }
+        
+        /* Footer Styles */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #333;
+            color: white;
+            margin-top: 50px;
+            border-top: 5px solid #ff8c00;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin: 15px;
+        }
+        
+        .footer-section h3 {
+            color: #ff8c00;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .footer-section p, .footer-section a {
+            color: #ddd;
+            margin-bottom: 10px;
+            text-decoration: none;
+            display: block;
+            transition: color 0.3s;
+        }
+        
+        .footer-section a:hover {
+            color: #ff8c00;
+        }
+        
+        .copyright {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #555;
+            color: #aaa;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 900px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .site-title {
+                margin-bottom: 15px;
+            }
+            
+            .tagline {
+                text-align: center;
+            }
+            
+            .sidebar {
+                position: static;
+                margin-bottom: 20px;
+            }
+            
+            .lesson-title {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .site-title {
+                font-size: 1.8rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+            
+            .content-area {
+                padding: 20px;
+            }
+            
+            .lesson-title {
+                font-size: 1.6rem;
+            }
+            
+            .code-example {
+                padding: 15px;
+                font-size: 0.9rem;
+            }
+            
+            .navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+    <div class="container">
+        <div class="header-content">
+            <div class="site-title"><a href="menu.html" style="color: white; text-decoration: none;">メローキタブ</a></div>
+        </div>
+    </div>
+</header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Sidebar with Lessons -->
+            <div class="sidebar">
+                <h2>Java Course</h2>
+                <ul class="modules">
+                    <li><a class="nav-link active" data-page="intro"><span class="module-icon"></span>Introduction to Java</a></li>
+                    <li><a class="nav-link" data-page="variables"><span class="module-icon"></span>Variables & Data Types</a></li>
+                    <li><a class="nav-link" data-page="operators"><span class="module-icon"></span>Operators & Expressions</a></li>
+                    <li><a class="nav-link" data-page="control-flow"><span class="module-icon"></span>Control Flow</a></li>
+                    <li><a class="nav-link" data-page="functions"><span class="module-icon"></span>Methods</a></li>
+                    <li><a class="nav-link" data-page="oop"><span class="module-icon"></span>OOP Concepts</a></li>
+                    <li><a class="nav-link" data-page="classes"><span class="module-icon"></span>Classes & Objects</a></li>
+                    <li><a class="nav-link" data-page="inheritance"><span class="module-icon"></span>Inheritance</a></li>
+                    <li><a class="nav-link" data-page="polymorphism"><span class="module-icon"></span>Polymorphism</a></li>
+                    <li><a class="nav-link" data-page="exceptions"><span class="module-icon"></span>Exception Handling</a></li>
+                    <li><a class="nav-link" data-page="collections"><span class="module-icon"></span>Collections Framework</a></li>
+                    <li><a class="nav-link" data-page="multithreading"><span class="module-icon"></span>Multithreading</a></li>
+                    <li><a class="nav-link" data-page="io"><span class="module-icon"></span>I/O Streams</a></li>
+                    <li><a class="nav-link" data-page="project"><span class="module-icon"></span>Final Project</a></li>
+                </ul>
+            </div>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Introduction Page -->
+                <div id="intro" class="page active">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 1: Introduction to Java</h2>
+                    
+                    <div class="lesson-content">
+                        <h3>What is Java?</h3>
+                        <p>Java is a high-level, class-based, object-oriented programming language designed to have as few implementation dependencies as possible. It was developed by Sun Microsystems (now owned by Oracle) and first released in 1995.</p>
+                        
+                        <div class="note">
+                            <h4><span class="note-icon"></span>Did You Know?</h4>
+                            <p>Java was originally called Oak after an oak tree that stood outside James Gosling's office. Later it was renamed to Java, from Java coffee.</p>
+                        </div>
+                        
+                        <h3>Why Learn Java?</h3>
+                        <p>Java is versatile and widely used for:</p>
+                        <ul>
+                            <li>Enterprise applications</li>
+                            <li>Android app development</li>
+                            <li>Web applications</li>
+                            <li>Scientific computing</li>
+                            <li>Big data technologies (Hadoop, Spark)</li>
+                            <li>Game development</li>
+                        </ul>
+                        
+                        <h3>Your First Java Program</h3>
+                        <p>Let's start with the traditional "Hello, World!" program. In Java, this requires a class and a main method:</p>
+                        
+                        <div class="code-example">
+                            <span class="keyword">public class</span> HelloWorld {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">public static void</span> main(String[] args) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span class="string">"Hello, World!"</span>);<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                            }
+                        </div>
+                        
+                        <p>To run this code, you need to save it in a file named HelloWorld.java, compile it with <code>javac HelloWorld.java</code>, and then run it with <code>java HelloWorld</code>.</p>
+                        
+                        <h3>Java Syntax Basics</h3>
+                        <p>Java uses curly braces {} to define code blocks, and semicolons to end statements. It's a statically-typed language, meaning you must declare the type of variables.</p>
+                        
+                        <div class="code-example">
+                            <span class="comment">// If statement example</span><br>
+                            <span class="keyword">int</span> number = <span class="number">5</span>;<br>
+                            <span class="keyword">if</span> (number <span class="number">2</span>) {<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span class="string">"Five is greater than two!"</span>);<br>
+                            }
+                        </div>
+                        
+                        <div class="exercise">
+                            <h4><span class="exercise-icon"></span>Try It Yourself</h4>
+                            <p>Set up Java on your computer and try the following:</p>
+                            <ol>
+                                <li>Create and run the HelloWorld program</li>
+                                <li>Modify it to print your name</li>
+                                <li>Create a program that declares an integer variable and prints it</li>
+                            </ol>
+                        </div>
+                        
+                        <h3>Java Features</h3>
+                        <p>Java has several features that make it a great choice for development:</p>
+                        <ul>
+                            <li><strong>Platform Independent:</strong> Write once, run anywhere (WORA)</li>
+                            <li><strong>Object-Oriented:</strong> Follows OOP principles</li>
+                            <li><strong>Robust:</strong> Strong memory management and exception handling</li>
+                            <li><strong>Secure:</strong> Provides security features like bytecode verification</li>
+                            <li><strong>Multithreading:</strong> Built-in support for concurrent programming</li>
+                        </ul>
+                        
+                        <h3>Setting Up Java</h3>
+                        <p>To get started with Java, you'll need to install the Java Development Kit (JDK):</p>
+                        <ol>
+                            <li>Download the latest JDK from the official Oracle website</li>
+                            <li>Run the installer and follow the instructions</li>
+                            <li>Set the JAVA_HOME environment variable</li>
+                            <li>Add Java to your system PATH</li>
+                            <li>Verify the installation by opening a terminal and typing <code>java -version</code></li>
+                        </ol>
+                        
+                        <p>You might also want to install an Integrated Development Environment (IDE) like IntelliJ IDEA, Eclipse, or NetBeans to make coding easier.</p>
+                        
+                        <div class="resources">
+                            <h3><span class="resource-icon"></span>Learning Resources</h3>
+                            <ul>
+                                <li>Official Java Documentation: docs.oracle.com/javase</li>
+                                <li>Java Tutorials: docs.oracle.com/javase/tutorial</li>
+                                <li>Codecademy Java Course: codecademy.com/learn/learn-java</li>
+                                <li>Coursera Java Specializations: coursera.org/courses?query=java</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="note">
+                            <h4><span class="note-icon"></span>Note for Beginners</h4>
+                            <p>If you're new to programming, Java might seem more complex than some other languages due to its verbose syntax. Don't worry - as you practice, you'll become comfortable with the structure and conventions.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="navigation">
+                        <button class="btn" disabled>Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="variables">Next Lesson: Variables & Data Types</button>
+                    </div>
+                </div>
+
+                <!-- Variables Page -->
+                <div id="variables" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 2: Variables & Data Types</h2>
+                    
+                    <div class="lesson-content">
+                        <h3>What are Variables?</h3>
+                        <p>Variables are containers for storing data values. In Java, you must declare a variable with a specific type before you can use it.</p>
+                        
+                        <div class="code-example">
+                            <span class="comment">// Variable declaration and assignment</span><br>
+                            <span class="keyword">int</span> age = <span class="number">25</span>;<br>
+                            <span class="keyword">double</span> height = <span class="number">5.9</span>;<br>
+                            <span class="keyword">char</span> grade = 'A';<br>
+                            <span class="keyword">boolean</span> isJavaFun = <span class="keyword">true</span>;<br>
+                            String name = <span class="string">"John"</span>;<br>
+                            <br>
+                            <span class="comment">// Print variables</span><br>
+                            System.out.println(age);<br>
+                            System.out.println(name);
+                        </div>
+                        
+                        <h3>Primitive Data Types</h3>
+                        <p>Java has 8 primitive data types:</p>
+                        <ul>
+                            <li><strong>byte:</strong> 8-bit integer (-128 to 127)</li>
+                            <li><strong>short:</strong> 16-bit integer (-32,768 to 32,767)</li>
+                            <li><strong>int:</strong> 32-bit integer (most commonly used)</li>
+                            <li><strong>long:</strong> 64-bit integer</li>
+                            <li><strong>float:</strong> Single-precision 32-bit floating point</li>
+                            <li><strong>double:</strong> Double-precision 64-bit floating point (most commonly used)</li>
+                            <li><strong>boolean:</strong> true or false values</li>
+                            <li><strong>char:</strong> Single 16-bit Unicode character</li>
+                        </ul>
+                        
+                        <div class="code-example">
+                            <span class="comment">// Examples of primitive data types</span><br>
+                            <span class="keyword">byte</span> smallNumber = <span class="number">100</span>;<br>
+                            <span class="keyword">short</span> mediumNumber = <span class="number">10000</span>;<br>
+                            <span class="keyword">int</span> largeNumber = <span class="number">100000</span>;<br>
+                            <span class="keyword">long</span> veryLargeNumber = <span class="number">1000000000L</span>;<br>
+                            <span class="keyword">float</span> price = <span class="number">10.99f</span>;<br>
+                            <span class="keyword">double</span> preciseValue = <span class="number">3.1415926535</span>;<br>
+                            <span class="keyword">boolean</span> isSunny = <span class="keyword">true</span>;<br>
+                            <span class="keyword">char</span> firstLetter = 'J';
+                        </div>
+                        
+                        <h3>Reference Data Types</h3>
+                        <p>In addition to primitives, Java has reference types like:</p>
+                        <ul>
+                            <li><strong>String:</strong> For text data (though technically a class)</li>
+                            <li><strong>Arrays:</strong> For storing collections of data</li>
+                            <li><strong>Classes:</strong> Custom data types you define</li>
+                            <li><strong>Interfaces:</strong> Abstract types that define behavior</li>
+                        </ul>
+                        
+                        <div class="code-example">
+                            <span class="comment">// String examples</span><br>
+                            String greeting = <span class="string">"Hello, Java!"</span>;<br>
+                            String name = <span class="string">"Alice"</span>;<br>
+                            <br>
+                            <span class="comment">// Array examples</span><br>
+                            <span class="keyword">int</span>[] numbers = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>};<br>
+                            String[] colors = {<span class="string">"red"</span>, <span class="string">"green"</span>, <span class="string">"blue"</span>};
+                        </div>
+                        
+                        <h3>Type Conversion</h3>
+                        <p>Java supports both implicit (widening) and explicit (narrowing) type conversion:</p>
+                        
+                        <div class="code-example">
+                            <span class="comment">// Implicit conversion (widening)</span><br>
+                            <span class="keyword">int</span> myInt = <span class="number">10</span>;<br>
+                            <span class="keyword">double</span> myDouble = myInt;  <span class="comment">// Automatically converts int to double</span><br>
+                            <br>
+                            <span class="comment">// Explicit conversion (narrowing)</span><br>
+                            <span class="keyword">double</span> anotherDouble = <span class="number">9.78</span>;<br>
+                            <span class="keyword">int</span> anotherInt = (<span class="keyword">int</span>) anotherDouble;  <span class="comment">// Manual casting: double to int</span><br>
+                            <br>
+                            System.out.println(myDouble);    <span class="comment">// Outputs 10.0</span><br>
+                            System.out.println(anotherInt);  <span class="comment">// Outputs 9 (decimal part lost)</span>
+                        </div>
+                        
+                        <div class="exercise">
+                            <h4><span class="exercise-icon"></span>Practice Exercise</h4>
+                            <p>Try these exercises to practice working with variables:</p>
+                            <ol>
+                                <li>Create variables to store your name, age, and favorite programming language</li>
+                                <li>Print a message that includes all these variables</li>
+                                <li>Create an array of your top 3 favorite foods and print them</li>
+                                <li>Try converting between different data types (int to double, double to int, etc.)</li>
+                            </ol>
+                        </div>
+                        
+                        <h3>Variable Naming Rules</h3>
+                        <p>When naming variables in Java, follow these rules:</p>
+                        <ul>
+                            <li>Variable names can contain letters, digits, underscores, and dollar signs</li>
+                            <li>They must begin with a letter, $ or _</li>
+                            <li>They are case-sensitive (age, Age, and AGE are different variables)</li>
+                            <li>Use descriptive names that indicate the purpose of the variable</li>
+                            <li>Follow the camelCase naming convention (e.g., userName, isLoggedIn)</li>
+                            <li>Avoid using Java keywords (like int, class, public, etc.)</li>
+                        </ul>
+                        
+                        <div class="note">
+                            <h4><span class="note-icon"></span>Best Practice</h4>
+                            <p>Always use descriptive variable names. Instead of short names like 'x' or 'n', use names that describe what the variable represents, like 'studentCount' or 'isAuthenticated'. This makes your code much more readable.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="intro">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="operators">Next Lesson: Operators & Expressions</button>
+                    </div>
+                </div>
+
+               
+                <!-- Operators Page ) -->
+                <div id="operators" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 3: Operators & Expressions</h2>
+                    
+                    <div class="lesson-content">
+                        <h3>Arithmetic Operators</h3>
+                        <p>Java supports various arithmetic operators for mathematical operations:</p>
+                        
+                        <div class="code-example">
+                            <span class="comment">// Arithmetic operators</span><br>
+                            <span class="keyword">int</span> x = <span class="number">10</span>;<br>
+                            <span class="keyword">int</span> y = <span class="number">3</span>;<br>
+                            <br>
+                            System.out.println(x + y);   <span class="comment">// Addition: 13</span><br>
+                            System.out.println(x - y);   <span class="comment">// Subtraction: 7</span><br>
+                            System.out.println(x * y);   <span class="comment">// Multiplication: 30</span><br>
+                            System.out.println(x / y);   <span class="comment">// Division: 3</span><br>
+                            System.out.println(x % y);   <span class="comment">// Modulus: 1</span><br>
+                            <br>
+                            <span class="comment">// Increment and decrement</span><br>
+                            x++;  <span class="comment">// x is now 11</span><br>
+                            y--;  <span class="comment">// y is now 2</span>
+                        </div>
+                        
+                        <p>More content would go here for the complete lesson...</p>
+                    </div>
+                    
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="variables">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="control-flow">Next Lesson: Control Flow</button>
+                    </div>
+                </div>
+
+                <!-- Placeholder for other lessons -->
+                <div id="control-flow" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 4: Control Flow</h2>
+                    <p>Content for control flow lesson (if statements, switch, loops)...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="operators">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="functions">Next Lesson: Methods</button>
+                    </div>
+                </div>
+
+                <div id="functions" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 5: Methods</h2>
+                    <p>Content for methods lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="control-flow">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="oop">Next Lesson: OOP Concepts</button>
+                    </div>
+                </div>
+
+                <!-- Additional lesson placeholders -->
+                <div id="oop" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 6: OOP Concepts</h2>
+                    <p>Content for OOP lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="functions">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="classes">Next Lesson: Classes & Objects</button>
+                    </div>
+                </div>
+
+                <div id="classes" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 7: Classes & Objects</h2>
+                    <p>Content for classes and objects lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="oop">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="inheritance">Next Lesson: Inheritance</button>
+                    </div>
+                </div>
+
+                <div id="inheritance" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 8: Inheritance</h2>
+                    <p>Content for inheritance lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="classes">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="polymorphism">Next Lesson: Polymorphism</button>
+                    </div>
+                </div>
+
+                <div id="polymorphism" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 9: Polymorphism</h2>
+                    <p>Content for polymorphism lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="inheritance">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="exceptions">Next Lesson: Exception Handling</button>
+                    </div>
+                </div>
+
+                <div id="exceptions" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 10: Exception Handling</h2>
+                    <p>Content for exception handling lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="polymorphism">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="collections">Next Lesson: Collections Framework</button>
+                    </div>
+                </div>
+
+                <div id="collections" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 11: Collections Framework</h2>
+                    <p>Content for collections lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="exceptions">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="multithreading">Next Lesson: Multithreading</button>
+                    </div>
+                </div>
+
+                <div id="multithreading" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 12: Multithreading</h2>
+                    <p>Content for multithreading lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="collections">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="io">Next Lesson: I/O Streams</button>
+                    </div>
+                </div>
+
+                <div id="io" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 13: I/O Streams</h2>
+                    <p>Content for I/O streams lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="multithreading">Previous Lesson</button>
+                        <button class="btn btn-secondary next-btn" data-next="project">Next Lesson: Final Project</button>
+                    </div>
+                </div>
+
+                <div id="project" class="page">
+                    <h2 class="lesson-title"><span class="lesson-icon"></span>Lesson 14: Final Project</h2>
+                    <p>Content for final project lesson...</p>
+                    <div class="navigation">
+                        <button class="btn prev-btn" data-prev="io">Previous Lesson</button>
+                        <button class="btn" disabled>Next Lesson</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About This Course</h3>
+                    <p>A comprehensive Java programming course designed for 中央情報専門学校 Student.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="#" class="nav-link" data-page="intro">Course Overview</a>
+                    <a href="#">Resources</a>
+                    <a href="#">Code Examples</a>
+                    <a href="#">Practice Exercises</a>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Email: kcsonic23579.com</p>
+                    <p>Phone: 070 2011 9953</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>中央情報専門学校 TEAM E</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript to handle navigation between pages
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get all navigation links
+            const navLinks = document.querySelectorAll('.nav-link');
+            const nextButtons = document.querySelectorAll('.next-btn');
+            const prevButtons = document.querySelectorAll('.prev-btn');
+            
+            // Function to show a specific page
+            function showPage(pageId) {
+                // Hide all pages
+                document.querySelectorAll('.page').forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // Show the requested page
+                document.getElementById(pageId).classList.add('active');
+                
+                // Update active link in sidebar
+                navLinks.forEach(link => {
+                    if (link.getAttribute('data-page') === pageId) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+                
+                // Scroll to top of content area
+                document.querySelector('.content-area').scrollTop = 0;
+            }
+            
+            // Add click event listeners to navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page');
+                    showPage(pageId);
+                });
+            });
+            
+            // Add click event listeners to next buttons
+            nextButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const nextPage = this.getAttribute('data-next');
+                    showPage(nextPage);
+                });
+            });
+            
+            // Add click event listeners to previous buttons
+            prevButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const prevPage = this.getAttribute('data-prev');
+                    showPage(prevPage);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
